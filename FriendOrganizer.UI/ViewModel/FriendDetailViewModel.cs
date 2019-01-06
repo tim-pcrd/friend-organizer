@@ -40,6 +40,10 @@ namespace FriendOrganizer.UI.ViewModel
 
             Friend.PropertyChanged += (s, e) =>
             {
+                if (!HasChanges)
+                {
+                    HasChanges = _friendRepository.HasChanges();
+                }
                 if (e.PropertyName == nameof(Friend.HasErrors))
                 {
                     ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
@@ -86,6 +90,7 @@ namespace FriendOrganizer.UI.ViewModel
         private async void OnSaveExecute()
         {
             await _friendRepository.SaveAsync();
+            HasChanges = _friendRepository.HasChanges();
             _eventAggregator.GetEvent<AfterFriendSavedEvent>()
                 .Publish(new AfterFriendSavedEventArgs()
                 {
