@@ -52,6 +52,18 @@
     <Compile Include="Migrations\201812291440240_InitiialDatabase.Designer.cs">
       <DependentUpon>201812291440240_InitiialDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901072235127_AddedProgrammingLanguage.cs" />
+    <Compile Include="Migrations\201901072235127_AddedProgrammingLanguage.Designer.cs">
+      <DependentUpon>201901072235127_AddedProgrammingLanguage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901082239380_AddedFriendPhoneNumbers.cs" />
+    <Compile Include="Migrations\201901082239380_AddedFriendPhoneNumbers.Designer.cs">
+      <DependentUpon>201901082239380_AddedFriendPhoneNumbers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901121518291_AddedMeeting.cs" />
+    <Compile Include="Migrations\201901121518291_AddedMeeting.Designer.cs">
+      <DependentUpon>201901121518291_AddedMeeting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -68,6 +80,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812291440240_InitiialDatabase.resx">
       <DependentUpon>201812291440240_InitiialDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901072235127_AddedProgrammingLanguage.resx">
+      <DependentUpon>201901072235127_AddedProgrammingLanguage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901082239380_AddedFriendPhoneNumbers.resx">
+      <DependentUpon>201901082239380_AddedFriendPhoneNumbers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901121518291_AddedMeeting.resx">
+      <DependentUpon>201901121518291_AddedMeeting.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

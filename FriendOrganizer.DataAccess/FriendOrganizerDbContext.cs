@@ -18,6 +18,12 @@ namespace FriendOrganizer.DataAccess
         }
         public DbSet<Friend> Friends { get; set; }
 
+        public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
+
+        public DbSet<FriendPhoneNumber> FriendPhoneNumbers { get; set; }
+
+        public DbSet<Meeting> Meetings { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,13 +38,13 @@ namespace FriendOrganizer.DataAccess
         }
     }
 
-    public class FriendConfiguration : EntityTypeConfiguration<Friend>
-    {
-        public FriendConfiguration()
-        {
-            Property(f=>f.FirstName)
-                .IsRequired()
-                .HasMaxLength(50);
-        }
-    }
+    //public class FriendConfiguration : EntityTypeConfiguration<Friend>
+    //{
+    //    public FriendConfiguration()
+    //    {
+    //        Property(f=>f.FirstName)
+    //            .IsRequired()
+    //            .HasMaxLength(50);
+    //    }
+    //}
 }

@@ -6,32 +6,45 @@ using FriendOrganizer.Model;
 
 namespace FriendOrganizer.UI.Data.Repositories
 {
-    public class FriendRepository : IFriendRepository
+    public class FriendRepository : GenericRepository<Friend,FriendOrganizerDbContext>, IFriendRepository
     {
 
-        private readonly FriendOrganizerDbContext _context;
 
-        public FriendRepository(FriendOrganizerDbContext context)
+        public FriendRepository(FriendOrganizerDbContext context) : base(context)
         {
-            _context = context;
-        }
-       
-        public async Task<Friend> GetByIdAsync(int friendId)
-        {
-
-            return await _context.Friends.SingleAsync(f => f.Id == friendId);
         }
 
-        public async Task SaveAsync()
+        public void RemovePhoneNumber(FriendPhoneNumber model)
         {
-            await _context.SaveChangesAsync();
+            _context.FriendPhoneNumbers.Remove(model);
         }
 
-        public bool HasChanges()
+        public override async Task<Friend> GetByIdAsync(int friendId)
         {
-            return _context.ChangeTracker.HasChanges();
+
+            return await _context.Friends.Include(f => f.PhoneNumbers).SingleAsync(f => f.Id == friendId);
         }
 
+        //public async Task<Friend> GetByIdAsync(int friendId)
+        //{
+
+        //    return await _context.Friends.Include(f => f.PhoneNumbers).SingleAsync(f => f.Id == friendId);
+        //}
+
+        //public async Task SaveAsync()
+        //{
+        //    await _context.SaveChangesAsync();
+        //}
+
+        //public bool HasChanges()
+        //{
+        //    return _context.ChangeTracker.HasChanges();
+        //}
+
+        //public void Remove(Friend model)
+        //{
+        //    _context.Friends.Remove(model);
+        //}
 
         //private readonly Func<FriendOrganizerDbContext> _contextCreator;
 
