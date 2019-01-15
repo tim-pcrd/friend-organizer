@@ -8,41 +8,56 @@ using FriendOrganizer.Model;
 
 namespace FriendOrganizer.UI.Data.Lookups
 {
-    public class LookupDataService : IFriendLookupDataService, IProgrammingLanguageLookupDataService
+    public class LookupDataService : IFriendLookupDataService, IProgrammingLanguageLookupDataService, IMeetingLookupDataService
     {
-        private readonly Func<FriendOrganizerDbContext> _contextCreator;
+    private readonly Func<FriendOrganizerDbContext> _contextCreator;
 
-        public LookupDataService(Func<FriendOrganizerDbContext> contextCreator)
-        {
-            _contextCreator = contextCreator;
-        }
+    public LookupDataService(Func<FriendOrganizerDbContext> contextCreator)
+    {
+        _contextCreator = contextCreator;
+    }
 
-        public async Task<IEnumerable<LookupItem>> GetFriendLookupAsync()
+    public async Task<IEnumerable<LookupItem>> GetFriendLookupAsync()
+    {
+        using (var ctx = _contextCreator())
         {
-            using (var ctx = _contextCreator())
-            {
-                return await ctx.Friends.AsNoTracking().Select(f =>
+            return await ctx.Friends.AsNoTracking().Select(f =>
                     new LookupItem()
                     {
                         Id = f.Id,
-                        DisplayMember = f.FirstName+" "+f.LastName
+                        DisplayMember = f.FirstName + " " + f.LastName
                     })
-                    .ToListAsync();
-            }
+                .ToListAsync();
         }
+    }
 
-        public async Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync()
+    public async Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync()
+    {
+        using (var ctx = _contextCreator())
         {
-            using (var ctx = _contextCreator())
-            {
-                return await ctx.ProgrammingLanguages.AsNoTracking().Select(p =>
-                        new LookupItem()
-                        {
-                            Id = p.Id,
-                            DisplayMember = p.Name
-                        })
-                    .ToListAsync();
-            }
+            return await ctx.ProgrammingLanguages.AsNoTracking().Select(p =>
+                    new LookupItem()
+                    {
+                        Id = p.Id,
+                        DisplayMember = p.Name
+                    })
+                .ToListAsync();
         }
+    }
+
+    public async Task<List<LookupItem>> GetMeetingLookupAsync()
+    {
+        using (var ctx = _contextCreator())
+        {
+            var items = await ctx.Meetings.AsNoTracking().Select(m =>
+                new LookupItem()
+                {
+                    Id = m.Id,
+                    DisplayMember = m.Title
+                }).ToListAsync();
+
+            return items;
+        }
+    }
     }
 }

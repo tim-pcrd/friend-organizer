@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using FriendOrganizer.DataAccess;
 using FriendOrganizer.Model;
@@ -23,6 +24,13 @@ namespace FriendOrganizer.UI.Data.Repositories
         {
 
             return await _context.Friends.Include(f => f.PhoneNumbers).SingleAsync(f => f.Id == friendId);
+        }
+
+        public async Task<bool> HasMeetingsAsync(int friendId)
+        {
+            return await _context.Meetings.AsNoTracking()
+                .Include(m => m.Friends)
+                .AnyAsync(m => m.Friends.Any(f => f.Id == friendId));
         }
 
         //public async Task<Friend> GetByIdAsync(int friendId)

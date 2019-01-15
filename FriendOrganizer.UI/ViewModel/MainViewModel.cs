@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Autofac.Features.Indexed;
 using FriendOrganizer.Model;
 using FriendOrganizer.UI.Annotations;
 using FriendOrganizer.UI.Data;
@@ -18,19 +19,20 @@ namespace FriendOrganizer.UI.ViewModel
 {
     public class MainViewModel:ViewModelBase
     {
-        private readonly Func<IFriendDetailViewModel> _friendDetailViewModelCreator;
+        private readonly IIndex<string, IDetailViewModel> _detailViewModelCreator;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMessageDialogService _messageDialogService;
         private IDetailViewModel _detailViewModel;
 
         public MainViewModel(INavigationViewModel navigationViewModel, 
-                             Func<IFriendDetailViewModel> friendDetailViewModelCreator, 
+                             IIndex<string,IDetailViewModel> detailViewModelCreator,
                              IEventAggregator eventAggregator,
                              IMessageDialogService messageDialogService)
         {
+            _detailViewModelCreator = detailViewModelCreator;
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
-            _friendDetailViewModelCreator = friendDetailViewModelCreator;
+
 
             _eventAggregator.GetEvent<OpenDetailViewEvent>()
                 .Subscribe(OnOpenDetailView);
@@ -75,12 +77,19 @@ namespace FriendOrganizer.UI.ViewModel
                 }
             }
 
-            switch (args.ViewModelName)
-            {
-                case nameof(FriendDetailViewModel):
-                    DetailViewModel = _friendDetailViewModelCreator();
-                    break;
-            }
+            //switch (args.ViewModelName)
+            //{
+            //    case nameof(FriendDetailViewModel):
+            //        DetailViewModel = _friendDetailViewModelCreator();
+            //        break;
+            //    case nameof(MeetingDetailViewModel):
+            //        DetailViewModel = _meetingDetailViewModelCreator();
+            //        break;
+            //    default:
+            //        throw new Exception($"ViewModel {args.ViewModelName} not mapped");
+            //}
+
+            DetailViewModel = _detailViewModelCreator[args.ViewModelName];
             
             await DetailViewModel.LoadAsync(args.Id);
         }
